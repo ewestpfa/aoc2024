@@ -26,9 +26,9 @@ int main()
             string first = mystring.substr(0, mystring.find(delimiter));
             mystring.erase(0, mystring.find(delimiter)+delimiter.length());
             string second = mystring;
-            cout << "first: " << first << endl;
+            // cout << "first: " << first << endl;
             list1.push_back(stoi(first));
-            cout << "second: " << second << endl;
+            // cout << "second: " << second << endl;
             list2.push_back(stoi(second));
 
             // Added resulting split strins to a vector
@@ -47,12 +47,40 @@ int main()
     sort(list1.begin(), list1.end(), comp);
     sort(list2.begin(), list2.end(), comp);
 
-    int sum = 0;
-
+    // Calculations for part 1
+    int distances = 0;
     for(int i = 0; i < list1.size(); i++){
-        sum += abs(list1[i] - list2[i]);
+        distances += abs(list1[i] - list2[i]);
     }
 
-    cout << endl << endl << "final: " << sum << endl;
+    cout << "part 1: " << distances << endl;
+
+    // Calculations for part 2
+    int prev = 0;
+    int idx2 = 0;
+    int similarity = 0;
+
+    for(int idx1 = 0; idx1 < list1.size();idx1++){
+        // New number
+        if(prev != list1[idx1]){
+            int count = 0;
+            // Skip over all lower numbers
+            while(idx2 < list2.size() && list2[idx2] < prev){
+                idx2++;
+            }
+            // Find thhe count of the current value
+            while(idx2 < list2.size() && list2[idx2] == prev){
+                idx2++;
+                count++;
+            }
+            similarity += prev * count;
+        }
+
+        // Update current number
+        prev = list1[idx1];
+        
+    }
+
+    cout << "part 2: " << similarity << endl;
     
 }
